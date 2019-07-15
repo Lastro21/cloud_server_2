@@ -1,0 +1,32 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: demo-server
+spec:
+  selector:
+    app: demo-server
+  ports:
+    - protocol: TCP
+      port: 8761
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-server
+spec:
+  selector:
+    matchLabels:
+      app: demo-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-server
+    spec:
+      containers:
+        - name: demo-server
+          image: demo-server:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8761
